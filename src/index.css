@@ -1,0 +1,256 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Archivo Variable', 'Noto Sans Devanagari Variable', ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Nirmala UI', sans-serif;
+  --font-serif: 'Instrument Serif', 'Tiro Devanagari Hindi', 'Iowan Old Style', Georgia, serif;
+
+  /* Palette: Rajasthan at dusk — indigo night, sandstone, saffron, terracotta */
+  --color-ink: #11131a;
+  --color-night: #141b2d;
+  --color-night-2: #1b2440;
+  --color-night-3: #26314f;
+  --color-paper: #f6f1e7;
+  --color-paper-2: #fbf8f2;
+  --color-sand: #ece2cf;
+  --color-dune: #d9c9ab;
+  --color-stone: #6b6455;
+  --color-saffron: #f2a33a;
+  --color-saffron-2: #f7bd62;
+  --color-saffron-deep: #b86a0c;
+  --color-terracotta: #c4512b;
+  --color-whatsapp: #25d366;
+  --color-whatsapp-deep: #128c4b;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-road: road 0.9s linear infinite;
+  --animate-ping-slow: ping-slow 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes road {
+    to {
+      background-position-x: -96px;
+    }
+  }
+  @keyframes ping-slow {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    80%,
+    100% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    /* Keeps #anchors and focused fields clear of the fixed header. Lenis reads this too, so it is the only offset. */
+    scroll-padding-top: 80px;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-saffron);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-saffron);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+}
+
+@layer components {
+  /* Wide, heavy display type — reads like highway signage */
+  .font-display {
+    font-family: var(--font-sans);
+    font-stretch: 118%;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 0.95;
+  }
+
+  .font-accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-stretch: 100%;
+    letter-spacing: -0.01em;
+  }
+
+  .container-x {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-x {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-x {
+      padding-inline: 2rem;
+    }
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-stretch: 112%;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Subtle film grain to keep flat colour from feeling digital */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Dashed centre line of a road */
+  .road-dashes {
+    background-image: linear-gradient(90deg, var(--color-saffron-2) 0 48px, transparent 48px 96px);
+    background-size: 96px 100%;
+    background-repeat: repeat-x;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-dune bg-paper-2 px-4 py-3 text-[15px] text-ink placeholder:text-stone/60 transition-[border-color,box-shadow] duration-200;
+    color-scheme: light;
+  }
+  .field:hover {
+    @apply border-stone/50;
+  }
+  .field:focus {
+    @apply border-ink outline-none;
+    box-shadow: 0 0 0 4px rgb(242 163 58 / 0.28);
+  }
+  .field[aria-invalid='true'] {
+    @apply border-terracotta;
+  }
+}
+
+/* Mask that headline words rise out of. */
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+/*
+ * Hindi (Devanagari): letter-spacing breaks the connecting head-line (शिरोरेखा), vowel signs sit
+ * above and below the line, and there is no uppercase — so relax spacing and give glyphs room.
+ */
+:lang(hi) {
+  letter-spacing: 0 !important;
+}
+:lang(hi) .font-display {
+  line-height: 1.28;
+  font-weight: 750;
+}
+:lang(hi) .word-mask {
+  padding-top: 0.2em;
+  margin-top: -0.2em;
+  padding-bottom: 0.32em;
+  margin-bottom: -0.32em;
+}
+:lang(hi) .eyebrow {
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+:lang(hi) .hero-title {
+  font-size: clamp(2.7rem, 7vw, 5.4rem);
+}
+:lang(hi) .font-accent {
+  font-style: italic;
+  font-size: 1em;
+}
+
+/* Hero entrance runs in CSS, so the pre-rendered page animates (and paints) before JavaScript loads. */
+@keyframes rise {
+  from {
+    transform: translateY(115%);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotate(1.5deg);
+  }
+}
+.anim-rise {
+  animation: rise 1s var(--ease-out-expo) both;
+}
+.anim-fade-up {
+  animation: fade-up 0.8s var(--ease-out-expo) both;
+}
+.anim-card {
+  animation: card-in 1.1s var(--ease-out-expo) both;
+}
+
+/* Car wheels spinning while a fleet card is hovered */
+.wheel-hover-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.group:hover .wheel-hover-spin {
+  animation: wheel-spin 0.7s linear infinite;
+}
+@keyframes wheel-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  /* The place-names strip keeps moving (slower); hover or focus pauses it. */
+  .marquee-track {
+    animation-duration: 60s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
