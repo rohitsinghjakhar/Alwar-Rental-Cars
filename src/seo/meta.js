@@ -161,6 +161,10 @@ export function getHead(route) {
     )
   }
 
+  // Link previews (WhatsApp, Facebook, X) show only this title, so it always names the business.
+  const brand = lang === 'hi' ? SITE.nameHi : SITE.name
+  const shareTitle = meta.title.includes(brand) ? meta.title : `${meta.title} | ${brand}`
+
   return {
     lang: LOCALE[lang],
     title: meta.title,
@@ -177,7 +181,7 @@ export function getHead(route) {
     og: {
       type: route.page === 'home' ? 'website' : 'article',
       url,
-      title: meta.title,
+      title: shareTitle,
       description: meta.description,
       image,
       imageAlt,
@@ -199,6 +203,7 @@ export function headTags(head) {
     ['meta', { property: 'og:title', content: head.og.title }],
     ['meta', { property: 'og:description', content: head.og.description }],
     ['meta', { property: 'og:image', content: head.og.image }],
+    ['meta', { property: 'og:image:type', content: 'image/jpeg' }],
     ['meta', { property: 'og:image:width', content: '1200' }],
     ['meta', { property: 'og:image:height', content: '630' }],
     ['meta', { property: 'og:image:alt', content: head.og.imageAlt }],
@@ -208,6 +213,7 @@ export function headTags(head) {
     ['meta', { name: 'twitter:title', content: head.og.title }],
     ['meta', { name: 'twitter:description', content: head.og.description }],
     ['meta', { name: 'twitter:image', content: head.og.image }],
+    ['meta', { name: 'twitter:image:alt', content: head.og.imageAlt }],
   ]
   if (head.canonical) tags.push(['link', { rel: 'canonical', href: head.canonical }])
   for (const alt of head.alternates) tags.push(['link', { rel: 'alternate', hreflang: alt.hreflang, href: alt.href }])

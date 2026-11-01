@@ -466,7 +466,7 @@ export default {
 
   meta: {
     home: {
-      title: `Self Drive Car Rental in Alwar | ${N} – Diwakari`,
+      title: `${N} – Self Drive Car Rental in Alwar`,
       description: `${N}: self drive cars on rent in Alwar – Swift, Dzire, Creta, Thar, Ertiga & Innova. Near PNB Bank, Diwakari. Open 8 AM–8 PM. Call ${P}.`,
     },
     cars: {

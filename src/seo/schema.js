@@ -7,7 +7,7 @@ import { FLEET } from '../content/fleet.js'
 import { ogImageFor } from '../content/photos.js'
 import { DICTIONARIES } from '../i18n/index.jsx'
 
-export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://www.alwarselfdrivecar.com').replace(/\/+$/, '')
+export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://www.alwarrentalcars.in').replace(/\/+$/, '')
 export const abs = (path) => `${SITE_URL}${path}`
 const ID = { business: `${SITE_URL}/#business`, website: `${SITE_URL}/#website` }
 const LOCALE = { en: 'en-IN', hi: 'hi-IN' }
